@@ -1,5 +1,8 @@
 import os 
 from flask import Flask, request, jsonify, Response
+
+from dataBaseTools import dbLen, addRecords2DB, getAllRecords
+
 app = Flask(__name__)
 
 
@@ -17,10 +20,9 @@ def post():
     
     ### MagicCode 
     ### Проверить данные 
-    ### Положить в БД
     ### Получить import_id
-    import_id = 0
-    ###
+    import_id = dbLen + 1
+    ### Положить в БД
 
     # Если успешно, то присылаем код 201 и json файл - Как присылать HTTP статус?
 

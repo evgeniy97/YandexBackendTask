@@ -2,23 +2,26 @@ from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017")
 db = client.yandex
-collection = db.shop   # Подключиться к конкретной коллекции в БД
+# collection = db.shop   # Подключиться к конкретной коллекции в БД
 
 
-def collectionLen(collection):
+def dbLen(db):
     """
-    Возвращает количество записей в БД
+    Возвращает количество коллекций в БД
     """
-    return collection.estimated_document_count()
+    return db.list_collection_names()
 
-def addRecord2DB():
+def addRecords2DB(import_id, data):
     """
-    Добавляет запись в БД
+    Добавляет коллекцию в БД
     """
-    pass
+    collection = db['import_{}'.format(import_id)]
+    collection.insert_many(data)
+    
+    return True
 
-def getAllRecords():
+def getAllRecords(import_id):
     """
-    Получает все записи из БД ?(с определенным import_id)?
+    Получает коллекцию из БД ?(с определенным import_id)?
     """
     pass
