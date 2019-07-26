@@ -14,6 +14,7 @@ def dbLen(db):
 def addRecords2DB(import_id, data):
     """
     Добавляет коллекцию в БД
+    data: list if dict
     """
     collection = db['import_{}'.format(import_id)]
     collection.insert_many(data)
@@ -23,5 +24,14 @@ def addRecords2DB(import_id, data):
 def getAllRecords(import_id):
     """
     Получает коллекцию из БД ?(с определенным import_id)?
+    """
+    collection = db['import_{}'.format(import_id)]
+    cursor = collection.find({})
+    returnedData = [document for document in cursor]
+    return returnedData
+
+def changeRecord(import_id, citizen_id):
+    """
+    Изменяет информацию о житиле и возвращает новую информацию
     """
     pass
