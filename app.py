@@ -88,7 +88,7 @@ def get(import_id):
     if  not import_id.isdigit(): return Response(status=400)
 
     limit = dbLen()
-    if import_id >= limit: Response(status=400)
+    if int(import_id) >= limit: Response(status=400)
 
     return Response(
         jsonify(
