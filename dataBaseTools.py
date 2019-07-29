@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo.collection import ReturnDocument
 
 client = MongoClient("mongodb://localhost:27017")
 db = client.yandex
@@ -43,6 +44,7 @@ def changeRecord(import_id, citizen_id, newData):
         {
             '$set': newData
         }
+        ,return_document=ReturnDocument.AFTER # вернуть модифицированный вариант
     )
     data.pop('_id',None)
     return data
