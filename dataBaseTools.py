@@ -32,8 +32,17 @@ def getAllRecords(import_id):
         doc.pop('_id',None)
     return returnedData
 
-def changeRecord(import_id, citizen_id):
+def changeRecord(import_id, citizen_id, newData):
     """
+    newData: dict
     Изменяет информацию о житиле и возвращает новую информацию
     """
-    pass
+    collection = db['import_{}'.format(import_id)]
+    data = collection.find_one_and_update(
+        {'citizen_id': citizen_id}, # ключ, по которому меняем
+        {
+            '$set': newData
+        }
+    )
+    data.pop('_id',None)
+    return data
