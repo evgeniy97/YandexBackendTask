@@ -5,11 +5,11 @@ db = client.yandex
 # collection = db.shop   # Подключиться к конкретной коллекции в БД
 
 
-def dbLen(db):
+def dbLen():
     """
     Возвращает количество коллекций в БД
     """
-    return db.list_collection_names()
+    return len(db.list_collection_names())
 
 def addRecords2DB(import_id, data):
     """
