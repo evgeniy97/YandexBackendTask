@@ -1,9 +1,22 @@
 import os 
 import numpy as np
 from flask import Flask, request, jsonify, Response
+from marshmallow import Schema, fields, ValidationError
 from dataBaseTools import dbLen, addRecords2DB, getAllRecords
 
 app = Flask(__name__)
+
+
+class CitizenSchema(Schema):
+    citizen_id = fields.Integer(required=True, validate=lambda x: x >= 0) # Добавить проверку на уникальность
+    town = fields.Str(required=True)
+    street = fields.Str(required=True)
+    building = fields.Str(required=True)
+    apartment = fields.Int(required=True,validate=lambda x: x >= 0) # >0
+    name = fields.Str(required=True)
+    birth_day = fields.DateTime(format='%d.%m.%Y',required=True)
+    gender = fields.Str(required=True, validate=lambda x: x in ['male','female']) # male/female
+    relatives = fields.List(fields.Int, required=True)
 
 
 @app.route('/')
@@ -16,10 +29,16 @@ def post():
     if request.method == 'POST':
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
         if 'file' not in request.files:
-            return "someting went wrong 1"
+            return Response(status=400)
     
     ### MagicCode 
-    ### Проверить данные 
+    # Получить данные из запроса 
+    data = request.files
+    # Добавить проверку поля родстенники
+    try:
+        CitizenSchema(many=True).load(data)
+    except ValidationError:
+        return Response(status=400)
 
     ### Получить import_id
     import_id = dbLen + 1
@@ -112,10 +131,6 @@ def getAgePercentile(import_id):
             { "data": [] }
             )
     ,status=200)
-
-@app.route('/test_<name>')
-def FUNCTION(name):
-    return(name)
 
 if __name__ == '__main__':
     app.run()
