@@ -2,7 +2,7 @@ import os
 import numpy as np
 from flask import Flask, request, jsonify, Response
 from marshmallow import Schema, fields, ValidationError
-from dataBaseTools import dbLen, addRecords2DB, getAllRecords
+from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord
 
 app = Flask(__name__)
 
@@ -65,10 +65,10 @@ def patch(import_id, citizen_id):
 
     if  not citizen_id.isdigit(): return Response(status=400)
 
+    content = request.json
     # Chsnge citizen data then get it
-    citizenData = []
-
-    return jsonify( {"data":{citizenData}}), 200
+    citizenData = changeRecord(import_id,int(citizen_id),content)
+    return jsonify( {"data":citizenData }), 200
 
 
 @app.route('/imports/<import_id>/citizens', methods=['GET'])
