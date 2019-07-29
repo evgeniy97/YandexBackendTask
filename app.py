@@ -91,9 +91,7 @@ def get(import_id):
     if int(import_id) >= limit: Response(status=400)
 
     return Response(
-        jsonify(
             { "data": getAllRecords(import_id) }
-            )
     ,status=200)
 
 
