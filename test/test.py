@@ -35,5 +35,5 @@ data = {'citizens': [{
 response = requests.post('http://127.0.0.1:5000/imports',json=data)
 print(response.status_code, response.content)
 
-response = requests.get("http://127.0.0.1:5000//imports/{}/citizens".format(1))
+response = requests.get("http://127.0.0.1:5000/imports/{}/citizens".format(1))
 print(response.status_code, response.content)
