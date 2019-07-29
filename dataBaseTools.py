@@ -28,6 +28,8 @@ def getAllRecords(import_id):
     collection = db['import_{}'.format(import_id)]
     cursor = collection.find({})
     returnedData = [document for document in cursor]
+    for doc in returnedData:
+        doc.pop('_id',None)
     return returnedData
 
 def changeRecord(import_id, citizen_id):
