@@ -48,9 +48,7 @@ def post():
     addRecords2DB(import_id,data)
 
     # Если успешно, то присылаем код 201 и json файл
-    return Response(
-        {"data":{"import_id": import_id}}
-    , status=201)
+    return jsonify({"data":{"import_id": import_id}}), 201
 
 
 
@@ -70,14 +68,7 @@ def patch(import_id, citizen_id):
     # Chsnge citizen data then get it
     citizenData = []
 
-    return Response(jsonify(
-        {
-            "data":
-            {
-                citizenData
-            }
-        }
-    ), status=200)
+    return jsonify( {"data":{citizenData}}), 200
 
 
 @app.route('/imports/<import_id>/citizens', methods=['GET'])
@@ -90,9 +81,7 @@ def get(import_id):
     limit = dbLen()
     if int(import_id) >= limit: Response(status=400) # Не работает
 
-    return Response(
-            { "data": getAllRecords(import_id) }
-    ,status=200)
+    return jsonify({ "data": getAllRecords(import_id)}), 200
 
 
 @app.route('/imports/<import_id>/citizens/birthdays', methods=['GET'])
