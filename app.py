@@ -59,13 +59,13 @@ def patch(import_id, citizen_id):
     """
     Изменяет информацию о жителе в указанном наборе данных
     """
-    if request.method == 'PATCH':
+    #if request.method == 'PATCH':
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
-        if 'file' not in request.files:
-            return "someting went wrong 1"
-    if  not import_id.is_digital(): return Response(status=400)
+    #    if 'file' not in request.files:
+    #        return "someting went wrong 1"
+    if  not import_id.isdigit(): return Response(status=400)
 
-    if  not citizen_id.is_digital(): return Response(status=400)
+    if  not citizen_id.isdigit(): return Response(status=400)
 
     # Chsnge citizen data then get it
     citizenData = []
@@ -74,7 +74,7 @@ def patch(import_id, citizen_id):
         {
             "data":
             {
-                "import_id": citizenData
+                citizenData
             }
         }
     ), status=200)
@@ -85,7 +85,10 @@ def get(import_id):
     """
     Возвращает список всех жителей для указанного набора
     """
-    if  not import_id.is_digital(): return Response(status=400)
+    if  not import_id.isdigit(): return Response(status=400)
+
+    limit = dbLen()
+    if import_id >= limit: Response(status=400)
 
     return Response(
         jsonify(
@@ -101,7 +104,7 @@ def getBirthdays(import_id):
     своим ближайшим родственникам (1-го порядка), сгрупированных по месяцам
     из указанного набора данных
     """
-    if  not import_id.is_digital(): return Response(status=400)
+    if  not import_id.isdigit(): return Response(status=400)
 
     data = getAllRecords(import_id)
 
@@ -119,7 +122,7 @@ def getAgePercentile(import_id):
     Возвращает статистику по городам для указанного набора данных
     в разрезе возраста жителец: p50, p75, p99, где число - это значение перцентиля
     """
-    if  not import_id.is_digital(): return Response(status=400)
+    if  not import_id.isdigit(): return Response(status=400)
 
     data = getAllRecords(import_id)
 
