@@ -26,34 +26,33 @@ def hello():
 
 @app.route('/imports',methods=['POST'])
 def post():
-    if request.method == 'POST':
+    #if request.method == 'POST':
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
-        if 'file' not in request.files:
-            return Response(status=400)
+    #    if 'file' not in request.files:
+    #        return Response(status=400)
     
     ### MagicCode 
     # Получить данные из запроса 
-    data = request.files
+    content = request.json
+    data = content['citizens']
     # Добавить проверку поля родстенники
     try:
         CitizenSchema(many=True).load(data)
-    except ValidationError:
+    except ValidationError as err:
+        print(err.messages)
         return Response(status=400)
 
     ### Получить import_id
-    import_id = dbLen + 1
+    import_id = dbLen() + 1
     ### Положить в БД
-    
-    # Если успешно, то присылаем код 201 и json файл
 
-    return Response(jsonify(
-        {
-            "data":
-            {
-                "import_id": import_id
-            }
-        }
-    ), status=201)
+
+    # Если успешно, то присылаем код 201 и json файл
+    return Response(
+        {"data":{"import_id": import_id}}
+    , status=201)
+
+
 
 @app.route('/imports/<import_id>/citizens/<citizen_id>', methods=['PATCH'])
 def patch(import_id, citizen_id):
