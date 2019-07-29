@@ -45,7 +45,7 @@ def post():
     ### Получить import_id
     import_id = dbLen() + 1
     ### Положить в БД
-
+    addRecords2DB(import_id,data)
 
     # Если успешно, то присылаем код 201 и json файл
     return Response(
