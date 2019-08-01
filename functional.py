@@ -1,6 +1,8 @@
 from datetime import datetime, date
 import numpy as np
 
+from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord 
+
 def minMax(a,b):
     return (min(a,b), max(a,b))
 
@@ -47,8 +49,40 @@ def calculateAge(birthDate):
     today = date.today()
     return today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
 
-def calculatePresents(data):
-    return []
+
+def getCitizen(import_id, citizen_id): #TEST
+    return changeRecord(import_id,int(citizen_id),{}) # Лучше написать функцию, которая просто возрасщает запись
+
+def getCitizenMonth(import_id, citizen_id):
+    return str(int(getCitizen(import_id, citizen_id)['birth_date'][3:5])) # str(int('01')) -> '1'
+
+def calculatePresents(import_id): # TEST
+    data = getAllRecords(import_id)
+    
+    returnedMonth = {}
+    for i in range(1,13):
+        returnedMonth[str(i)] = []
+    
+    for person in data:
+        if len(person['relatives']) == 0: pass
+        relativesMonth = {}
+        for relative_id in person['relatives']:
+            month = getCitizenMonth(import_id, relative_id)
+            if month in relativesMonth:
+                relativesMonth[month] += 1
+            else:
+                relativesMonth[month] = 1
+        
+        # Раскидать этого person по месяцам
+        for month, number in relativesMonth.items():
+            returnedMonth[month].add(
+                {
+                    "citizen_id": person['citizen_id'],
+                    "presents": number
+                }
+            )
+
+    return returnedMonth
 
 def calculatePercentile(city_name, ages):
     return {
