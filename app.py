@@ -87,21 +87,19 @@ def get(import_id): # TEST
 
 
 @app.route('/imports/<import_id>/citizens/birthdays', methods=['GET'])
-def getBirthdays(import_id): # TO DO
+def getBirthdays(import_id): # TEST
     """
     Возвращает жителей и количество подарков, которые они будут покупать
     своим ближайшим родственникам (1-го порядка), сгрупированных по месяцам
     из указанного набора данных
     """
     if  not import_id.isdigit(): return Response(status=400)
-
-    data = getAllRecords(import_id)
-
+    responseData = functional.calculatePresents(import_id)
     # Magic function work with data
 
     return Response(
         jsonify(
-            { "data": [] }
+            { "data": responseData }
             )
     ,status=200)
 
