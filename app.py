@@ -108,7 +108,7 @@ def getBirthdays(import_id):
     ,status=200)
 
 @app.route('/imports/<import_id>/towns/stat/percentile/age', methods=['GET'])
-def getAgePercentile(import_id):
+def getAgePercentile(import_id): # TEST
     """
     Возвращает статистику по городам для указанного набора данных
     в разрезе возраста жителец: p50, p75, p99, где число - это значение перцентиля
@@ -117,11 +117,19 @@ def getAgePercentile(import_id):
 
     data = getAllRecords(import_id)
 
-    # Magic function work with data
+    agesPerTowns = {}
+
+    for person in data:
+        if person['town'] in agesPerTowns:
+            agesPerTowns[person['town']].add(person['birth_date'])
+        else:
+            agesPerTowns[person['town']] = [person['birth_date']]
+
+    responseData = [ functional.calculatePercentile(city,agesPerTowns[city]) for city in agesPerTowns.keys()]
 
     return Response(
         jsonify(
-            { "data": [] }
+            { "data": responseData }
             )
     ,status=200)
 
