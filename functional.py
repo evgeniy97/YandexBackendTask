@@ -1,3 +1,4 @@
+from datetime import datetime, date
 
 def minMax(a,b):
     return (min(a,b), max(a,b))
@@ -37,8 +38,13 @@ def isRelativesCorrect(data):
             unclosed_id.add(person['citizen_id'], relative_id)
     return unclosed_id.is_opened() == False
 
-def calculateAge(person):
-    return 42
+def calculateAge(birthDate):
+    """
+    Возвращает int: возраст жителя
+    """
+    date_of_birth = datetime.strptime(birthDate, "%d.%m.%Y")
+    today = date.today()
+    return today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
 
 def calculatePresents(data):
     return []
