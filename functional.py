@@ -1,4 +1,5 @@
 from datetime import datetime, date
+import numpy as np
 
 def minMax(a,b):
     return (min(a,b), max(a,b))
@@ -49,5 +50,10 @@ def calculateAge(birthDate):
 def calculatePresents(data):
     return []
 
-def calculatePercentile(data):
-    pass
+def calculatePercentile(city_name, ages):
+    return {
+        "town": city_name,
+        "p50": np.percentile(ages,50,interpolation='linear'),
+        "p75": np.percentile(ages,75,interpolation='linear'),
+        "p99": np.percentile(ages,99,interpolation='linear')
+    }
