@@ -19,14 +19,12 @@ class CitizenSchema(Schema):
     gender = fields.Str(required=True, validate=lambda x: x in ['male','female']) # male/female
     relatives = fields.List(fields.Int, required=True)
 
-
 @app.route('/')
 def hello():
     return "Hello, this is implication of yandex backend school's task by Evgeniy Khomutov"
 
-
 @app.route('/imports',methods=['POST'])
-def post():
+def post(): # TEST
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
     if not request.is_json: # ПРОВЕРИТЬ
         return Response(status=400)
@@ -54,7 +52,7 @@ def post():
 
 
 @app.route('/imports/<import_id>/citizens/<citizen_id>', methods=['PATCH'])
-def patch(import_id, citizen_id):
+def patch(import_id, citizen_id): # TEST
     """
     Изменяет информацию о жителе в указанном наборе данных
     """
@@ -76,7 +74,7 @@ def patch(import_id, citizen_id):
 
 
 @app.route('/imports/<import_id>/citizens', methods=['GET'])
-def get(import_id):
+def get(import_id): # TEST
     """
     Возвращает список всех жителей для указанного набора
     """
@@ -89,7 +87,7 @@ def get(import_id):
 
 
 @app.route('/imports/<import_id>/citizens/birthdays', methods=['GET'])
-def getBirthdays(import_id):
+def getBirthdays(import_id): # TO DO
     """
     Возвращает жителей и количество подарков, которые они будут покупать
     своим ближайшим родственникам (1-го порядка), сгрупированных по месяцам
