@@ -3,6 +3,7 @@ import numpy as np
 from flask import Flask, request, jsonify, Response
 from marshmallow import Schema, fields, ValidationError
 from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord
+import functional 
 
 app = Flask(__name__)
 
@@ -26,15 +27,15 @@ def hello():
 
 @app.route('/imports',methods=['POST'])
 def post():
-    #if request.method == 'POST':
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
-    #    if 'file' not in request.files:
-    #        return Response(status=400)
-    
-    ### MagicCode 
+    if not request.is_json: # ПРОВЕРИТЬ
+        return Response(status=400)
+     
     # Получить данные из запроса 
     content = request.json
     data = content['citizens']
+    if not functional.isRelativesCorrect(data):
+        return Response(status=400)
     # Добавить проверку поля родстенники
     try:
         CitizenSchema(many=True).load(data)
@@ -61,6 +62,9 @@ def patch(import_id, citizen_id):
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
     #    if 'file' not in request.files:
     #        return "someting went wrong 1"
+
+    # Добавить проверку структуры полученного json
+
     if  not import_id.isdigit(): return Response(status=400)
 
     if  not citizen_id.isdigit(): return Response(status=400)
