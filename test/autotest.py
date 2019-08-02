@@ -14,6 +14,8 @@ def testPOST(json_name,expected_code,if_answer_expected,expected_import_id, desc
     if if_answer_expected:
         assert json.loads(response.content) == { 'data': {'import_id': expected_import_id} }, "{}: import_id error".format(description)
 
+def testPath(expected_code, import_id, citizen_id,if_answer_expected, expected_answer, description):
+    pass
 
 def testGet1(expected_code, import_id,if_answer_expected, json_name, description):
     response = requests.get('http://127.0.0.1:5000/imports/{}/citizens'.format(import_id))
