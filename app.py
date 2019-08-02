@@ -2,7 +2,7 @@ import os
 import numpy as np
 from flask import Flask, request, jsonify, Response
 from marshmallow import Schema, fields, ValidationError
-from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord
+from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, isAvailable
 import functional 
 
 app = Flask(__name__)
@@ -128,4 +128,7 @@ def getAgePercentile(import_id): # TEST
             ) , 200
 
 if __name__ == '__main__':
-    app.run()
+    if isAvailable():
+        app.run()
+    else:
+        print('DataBase not run')
