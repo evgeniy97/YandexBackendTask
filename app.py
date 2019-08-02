@@ -70,13 +70,16 @@ def patch(import_id, citizen_id): # TEST
     if  not citizen_id.isdigit(): return Response(status=400)
 
     content = request.json
+
+    if 'citizen_id' in content: return Response(status=400) # check
+
     # Chsnge citizen data then get it
     citizenData = changeRecord(import_id,int(citizen_id),content)
     return jsonify( {"data":citizenData }), 200
 
 
 @app.route('/imports/<import_id>/citizens', methods=['GET'])
-def get(import_id): # TEST
+def get(import_id): # +
     """
     Возвращает список всех жителей для указанного набора
     """
@@ -89,7 +92,7 @@ def get(import_id): # TEST
 
 
 @app.route('/imports/<import_id>/citizens/birthdays', methods=['GET'])
-def getBirthdays(import_id): # TEST
+def getBirthdays(import_id): # +
     """
     Возвращает жителей и количество подарков, которые они будут покупать
     своим ближайшим родственникам (1-го порядка), сгрупированных по месяцам
@@ -104,7 +107,7 @@ def getBirthdays(import_id): # TEST
             ), 200
 
 @app.route('/imports/<import_id>/towns/stat/percentile/age', methods=['GET'])
-def getAgePercentile(import_id): # TEST
+def getAgePercentile(import_id): # +
     """
     Возвращает статистику по городам для указанного набора данных
     в разрезе возраста жителец: p50, p75, p99, где число - это значение перцентиля
