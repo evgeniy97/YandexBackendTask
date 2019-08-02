@@ -17,13 +17,31 @@ def testPOST(json_name,expected_code,if_answer_expected,expected_import_id, desc
 
 def testGet1(expected_code, import_id,if_answer_expected, json_name, description):
     response = requests.get('http://127.0.0.1:5000/imports/{}/citizens'.format(import_id))
+    print(response.status_code)
     assert response.status_code == expected_code, "{}: http error".format(description)
-    #if if_answer_expected:
-    #    with open(json_name) as json_file:
-    #        expected_answer = json.load(json_file)
-    #        print(expected_answer)
-    #        print(json.loads(response.content))
-    #    assert json.loads(response.content)['data'] == expected_answer['citizens'], "{}: data error".format(description)
+    if if_answer_expected:
+        with open(json_name) as json_file:
+            expected_answer = json.load(json_file)
+        assert json.loads(response.content)['data'] == expected_answer['citizens'], "{}: data error".format(description)
+
+def testGet2(expected_code,import_id,if_answer_expected, json_name, description):
+    response = requests.get('http://127.0.0.1:5000/imports/{}/citizens/birthdays'.format(import_id))
+    print(response.status_code)
+    assert response.status_code == expected_code, "{}: http error".format(description)
+    if if_answer_expected:
+        with open(json_name) as json_file:
+            expected_answer = json.load(json_file)
+        assert json.loads(response.content) == expected_answer, "{}: data error".format(description)
+
+def testGet3(expected_code,import_id,if_answer_expected, json_name, description):
+    response = requests.get('http://127.0.0.1:5000/imports/{}/towns/stat/percentile/age'.format(import_id))
+    print(response.status_code)
+    assert response.status_code == expected_code, "{}: http error".format(description)
+    if if_answer_expected:
+        with open(json_name) as json_file:
+            expected_answer = json.load(json_file)
+        assert json.loads(response.content) == expected_answer, "{}: data error".format(description)
+
 
 # Сбросили database, чтобы провести тесты
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -47,6 +65,18 @@ testPOST('jsons/big_data.json',201,True,3,"Big request")
 
 testGet1(200,1,True,'jsons/good_2.json',"get1 Basic 2")
 testGet1(400,10,False,None,"get2 Basic bad request")
-testGet1(200,1,True,'jsons/big_data.json',"get1 Big data")
+testGet1(200,3,True,'jsons/big_data.json',"get1 Big data")
 
-myclient.drop_database('yandex')
+testGet2(400,10,False, None,"import_id > len ")
+testGet2(400,'Lkd', False, None, "bad import_id")
+testGet2(200,1,True,"jsons/birthdays1.json","small data")
+testGet2(200,2,True,"jsons/birthdays2.json","small data 2")
+testGet2(200,3,True,"jsons/birthdays3.json","big data")
+
+testGet3(400,10,False, None,"import_id > len ")
+testGet3(400,'Lkd', False, None, "bad import_id")
+testGet3(200,1,True,"jsons/age1.json","small data")
+testGet3(200,2,True,"jsons/age2.json","small data 2")
+testGet3(200,3,True,"jsons/age3.json","big data")
+
+#myclient.drop_database('yandex')
