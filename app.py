@@ -33,14 +33,16 @@ def post(): # TEST
     # Получить данные из запроса 
     content = request.json
     data = content['citizens']
-    if not functional.isRelativesCorrect(data):
-        print('Bad data')
-        return Response(status=400)
-    # Добавить проверку поля родстенники
+
+        # Добавить проверку поля родстенники
     try:
         CitizenSchema(many=True).load(data)
     except ValidationError as err:
         print(err.messages)
+        return Response(status=400)
+
+    if not functional.isRelativesCorrect(data):
+        print('Bad data')
         return Response(status=400)
 
     ### Получить import_id
