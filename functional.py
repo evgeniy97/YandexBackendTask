@@ -1,7 +1,7 @@
 from datetime import datetime, date
 import numpy as np
 
-from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord 
+from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, getRecord
 
 def minMax(a,b):
     return (min(a,b), max(a,b))
@@ -50,7 +50,7 @@ def calculateAge(birthDate):
 
 
 def getCitizen(import_id, citizen_id): #TEST
-    return changeRecord(import_id,int(citizen_id),{}) # Лучше написать функцию, которая просто возрасщает запись
+    return getRecord(import_id,int(citizen_id)) # Лучше написать функцию, которая просто возрасщает запись
 
 def getCitizenMonth(import_id, citizen_id):
     return str(int(getCitizen(import_id, citizen_id)['birth_date'][3:5])) # str(int('01')) -> '1'

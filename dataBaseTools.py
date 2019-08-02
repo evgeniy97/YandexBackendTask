@@ -59,3 +59,9 @@ def changeRecord(import_id, citizen_id, newData):
     )
     data.pop('_id',None)
     return data
+
+def getRecord(import_id, citizen_id):
+    collection = db['import_{}'.format(import_id)]
+    data = collection.find_one({'citizen_id': int(citizen_id)})
+    data.pop('_id',None)
+    return data
