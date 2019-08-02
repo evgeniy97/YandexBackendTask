@@ -15,7 +15,7 @@ class CitizenSchema(Schema):
     building = fields.Str(required=True)
     apartment = fields.Int(required=True,validate=lambda x: x >= 0) # >0
     name = fields.Str(required=True)
-    birth_day = fields.DateTime(format='%d.%m.%Y',required=True)
+    birth_date = fields.DateTime(format='%d.%m.%Y',required=True)
     gender = fields.Str(required=True, validate=lambda x: x in ['male','female']) # male/female
     relatives = fields.List(fields.Int, required=True)
 
@@ -27,12 +27,14 @@ def hello():
 def post(): # TEST
     # проверяем, что прислали файл НАДО ПРОВЕРИТЬ ЧТО ЭТО JSON
     if not request.is_json: # ПРОВЕРИТЬ
+        print('JSON MISTAKE')
         return Response(status=400)
      
     # Получить данные из запроса 
     content = request.json
     data = content['citizens']
     if not functional.isRelativesCorrect(data):
+        print('Bad data')
         return Response(status=400)
     # Добавить проверку поля родстенники
     try:
@@ -93,15 +95,13 @@ def getBirthdays(import_id): # TEST
     своим ближайшим родственникам (1-го порядка), сгрупированных по месяцам
     из указанного набора данных
     """
+
     if  not import_id.isdigit(): return Response(status=400)
     responseData = functional.calculatePresents(import_id)
-    # Magic function work with data
 
-    return Response(
-        jsonify(
+    return jsonify(
             { "data": responseData }
-            )
-    ,status=200)
+            ), 200
 
 @app.route('/imports/<import_id>/towns/stat/percentile/age', methods=['GET'])
 def getAgePercentile(import_id): # TEST
@@ -117,17 +117,15 @@ def getAgePercentile(import_id): # TEST
 
     for person in data:
         if person['town'] in agesPerTowns:
-            agesPerTowns[person['town']].add(person['birth_date'])
+            agesPerTowns[person['town']].append(functional.calculateAge(person['birth_date']))
         else:
-            agesPerTowns[person['town']] = [person['birth_date']]
+            agesPerTowns[person['town']] = [functional.calculateAge(person['birth_date'])]
 
     responseData = [ functional.calculatePercentile(city,agesPerTowns[city]) for city in agesPerTowns.keys()]
-
-    return Response(
-        jsonify(
+    
+    return jsonify(
             { "data": responseData }
-            )
-    ,status=200)
+            ) , 200
 
 if __name__ == '__main__':
     app.run()
