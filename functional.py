@@ -19,10 +19,9 @@ class Relatives(object):
             self.open_relate.remove(rightPair)
         else:
             self.open_relate.add(rightPair)
-        pass
     
     def is_opened(self):
-        return len(self.open_relate) == 0
+        return len(self.open_relate) != 0
 
 
 
