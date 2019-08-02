@@ -61,6 +61,7 @@ for j in range(1, 10):
 
 # In[7]:
 
+data = {"citizens": data}
 
 with open('jsons/big_data.json', 'w') as f:
     json.dump(data, f,ensure_ascii=False)

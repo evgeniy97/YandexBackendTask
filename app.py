@@ -42,7 +42,6 @@ def post(): # TEST
         return Response(status=400)
 
     if not functional.isRelativesCorrect(data):
-        print('Bad data')
         return Response(status=400)
 
     ### Получить import_id
