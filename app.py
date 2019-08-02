@@ -66,15 +66,17 @@ def patch(import_id, citizen_id): # TEST
     # Добавить проверку структуры полученного json
 
     if  not import_id.isdigit(): return Response(status=400)
-
     if  not citizen_id.isdigit(): return Response(status=400)
+    if int(import_id) > dbLen(): return Response(status=400)
 
     content = request.json
 
     if 'citizen_id' in content: return Response(status=400) # check
 
-    # Chsnge citizen data then get it
-    citizenData = changeRecord(import_id,int(citizen_id),content)
+    
+    # Change citizen data then get it
+    citizenData = functional.change(import_id,int(citizen_id),content)
+
     return jsonify( {"data":citizenData }), 200
 
 
@@ -84,9 +86,7 @@ def get(import_id): # +
     Возвращает список всех жителей для указанного набора
     """
     if  not import_id.isdigit(): return Response(status=400)
-
-    limit = dbLen()
-    if int(import_id) >= limit: Response(status=400) # Не работает
+    if int(import_id) > dbLen(): return Response(status=400)
  
     return jsonify({ "data": getAllRecords(import_id)}), 200
 
@@ -100,6 +100,8 @@ def getBirthdays(import_id): # +
     """
 
     if  not import_id.isdigit(): return Response(status=400)
+    if int(import_id) > dbLen(): return Response(status=400)
+
     responseData = functional.calculatePresents(import_id)
 
     return jsonify(
@@ -113,6 +115,7 @@ def getAgePercentile(import_id): # +
     в разрезе возраста жителец: p50, p75, p99, где число - это значение перцентиля
     """
     if  not import_id.isdigit(): return Response(status=400)
+    if int(import_id) > dbLen(): return Response(status=400)
 
     responseData = functional.calculatePercentileFunctional(import_id)
 

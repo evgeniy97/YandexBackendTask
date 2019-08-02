@@ -104,3 +104,38 @@ def calculatePercentileFunctional(import_id):
 
     responseData = [calculatePercentile(city,agesPerTowns[city]) for city in agesPerTowns.keys()]
     return responseData
+
+def change(import_id,citizen_id, content):
+    citizen_id = int(citizen_id)
+    if not 'relatives' in content:
+        return changeRecord(import_id,citizen_id,content)
+    else:
+        new_relatives = content.pop('relatives')
+        data = changeRecord(import_id,citizen_id,content)
+        old_relatives = data['relatives']
+
+        # Этим циклом добавляем новые свзяи
+        for relative_id in new_relatives:
+            if not relative_id in old_relatives:
+                """
+                1) Получим данные этого жителя, возьмем из них его родственников
+                2) Добавим текущего жителя в список
+                3) Обновим список родственников
+                """
+                otherCitizenDataRelatives = getRecord(import_id,relative_id)['relatives']
+                otherCitizenDataRelatives.append(citizen_id)
+                changeRecord(import_id,relative_id,{'relatives': otherCitizenDataRelatives})
+        
+        # Этим циклом удаляем старые связи
+        for relative_id in old_relatives:
+            if not relative_id in new_relatives:
+                """
+                1) Получим данные этого жителя, возьмем из них его родственников
+                2) Удалим текущего жителя в список
+                3) Обновим список родственников
+                """
+                otherCitizenDataRelatives = getRecord(import_id,relative_id)['relatives']
+                otherCitizenDataRelatives.remove(citizen_id)
+                changeRecord(import_id,relative_id,{'relatives': otherCitizenDataRelatives})
+
+    return changeRecord(import_id,int(citizen_id),{'relatives':new_relatives})
