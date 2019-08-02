@@ -1,0 +1,22 @@
+{"citizens": [{
+    "citizen_id": 10,
+    "town": "Moscow",
+    "street": "Street",
+    "building": "1c4",
+    "apartment": 5,
+    "name": "Name",
+    "birth_day": "10.04.2000",
+    "gender": "male"
+},
+    {
+    "citizen_id": 12,
+    "town": "Kiev",
+    "street": "Street",
+    "building": "10",
+    "apartment": 50,
+    "name": "Name",
+    "birth_date": "10.09.1998",
+    "gender": "male"
+    , "relatives": [10]
+    }
+] }
