@@ -74,7 +74,7 @@ def calculatePresents(import_id): # TEST
         
         # Раскидать этого person по месяцам
         for month, number in relativesMonth.items():
-            returnedMonth[month].add(
+            returnedMonth[month].append(
                 {
                     "citizen_id": person['citizen_id'],
                     "presents": number
@@ -90,3 +90,17 @@ def calculatePercentile(city_name, ages):
         "p75": np.percentile(ages,75,interpolation='linear'),
         "p99": np.percentile(ages,99,interpolation='linear')
     }
+
+def calculatePercentileFunctional(import_id):
+    data = getAllRecords(import_id)
+
+    agesPerTowns = {}
+
+    for person in data:
+        if person['town'] in agesPerTowns:
+            agesPerTowns[person['town']].append(calculateAge(person['birth_date']))
+        else:
+            agesPerTowns[person['town']] = [calculateAge(person['birth_date'])]
+
+    responseData = [calculatePercentile(city,agesPerTowns[city]) for city in agesPerTowns.keys()]
+    return responseData

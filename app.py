@@ -111,21 +111,13 @@ def getAgePercentile(import_id): # TEST
     """
     if  not import_id.isdigit(): return Response(status=400)
 
-    data = getAllRecords(import_id)
+    responseData = functional.calculatePercentileFunctional(import_id)
 
-    agesPerTowns = {}
-
-    for person in data:
-        if person['town'] in agesPerTowns:
-            agesPerTowns[person['town']].append(functional.calculateAge(person['birth_date']))
-        else:
-            agesPerTowns[person['town']] = [functional.calculateAge(person['birth_date'])]
-
-    responseData = [ functional.calculatePercentile(city,agesPerTowns[city]) for city in agesPerTowns.keys()]
-    
     return jsonify(
             { "data": responseData }
             ) , 200
+
+
 
 if __name__ == '__main__':
     if isAvailable():
