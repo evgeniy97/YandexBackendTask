@@ -8,12 +8,13 @@ client = MongoClient("mongodb://localhost:27017")
 db = client.yandex
 
 def isAvailable():
+    client = MongoClient("mongodb://localhost:27017",serverSelectionTimeoutMS=1)
     try:
-        client = MongoClient("mongodb://localhost:27017",
-        serverSelectionTimeoutMS=1)
-        client.server_info()
+        # The ismaster command is cheap and does not require auth.
+        client.admin.command('ismaster')
         return True
-    except ServerSelectionTimeoutError:
+    except ConnectionFailure:
+        print("Server not available")
         return False
 
 
@@ -65,3 +66,8 @@ def getRecord(import_id, citizen_id):
     data = collection.find_one({'citizen_id': int(citizen_id)})
     data.pop('_id',None)
     return data
+
+def checkCitizenExits(import_id, citizen_id):
+    collection = db['import_{}'.format(import_id)]
+    data = collection.find_one({'citizen_id': int(citizen_id)})
+    return bool(data)

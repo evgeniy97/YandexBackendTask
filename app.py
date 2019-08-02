@@ -2,7 +2,7 @@ import os
 import numpy as np
 from flask import Flask, request, jsonify, Response
 from marshmallow import Schema, fields, ValidationError
-from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, isAvailable
+from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, isAvailable, checkCitizenExits
 import functional 
 
 app = Flask(__name__)
@@ -68,6 +68,7 @@ def patch(import_id, citizen_id): # TEST
     if  not import_id.isdigit(): return Response(status=400)
     if  not citizen_id.isdigit(): return Response(status=400)
     if int(import_id) > dbLen(): return Response(status=400)
+    if not checkCitizenExits(import_id,int(citizen_id)): return Response(status=400)
 
     content = request.json
 
@@ -129,4 +130,4 @@ if __name__ == '__main__':
     if isAvailable():
         app.run()
     else:
-        print('DataBase not run')
+        print("Server not available")
