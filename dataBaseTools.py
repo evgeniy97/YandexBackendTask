@@ -1,9 +1,20 @@
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from pymongo.collection import ReturnDocument
+
+# Check if db available
 
 client = MongoClient("mongodb://localhost:27017")
 db = client.yandex
-# collection = db.shop   # Подключиться к конкретной коллекции в БД
+
+def isAvailable():
+    try:
+        client = MongoClient("mongodb://localhost:27017",
+        serverSelectionTimeoutMS=1)
+        client.server_info()
+        return True
+    except ServerSelectionTimeoutError:
+        return False
 
 
 def dbLen():
