@@ -1,0 +1,133 @@
+{
+  "data": {
+    "1": [
+      {
+        "citizen_id": 10001, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10002, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10003, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10004, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10005, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10006, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10007, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10008, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10009, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10019, 
+        "presents": 1
+      }
+    ], 
+    "10": [], 
+    "11": [], 
+    "12": [], 
+    "2": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10011, 
+        "presents": 1
+      }
+    ], 
+    "3": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10012, 
+        "presents": 1
+      }
+    ], 
+    "4": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10013, 
+        "presents": 1
+      }
+    ], 
+    "5": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10014, 
+        "presents": 1
+      }
+    ], 
+    "6": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10015, 
+        "presents": 1
+      }
+    ], 
+    "7": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10016, 
+        "presents": 1
+      }
+    ], 
+    "8": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10017, 
+        "presents": 1
+      }
+    ], 
+    "9": [
+      {
+        "citizen_id": 1, 
+        "presents": 1
+      }, 
+      {
+        "citizen_id": 10018, 
+        "presents": 1
+      }
+    ]
+  }
+}

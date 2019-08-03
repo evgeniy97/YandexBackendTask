@@ -2,4 +2,9 @@
 #
 # Python=3.6
 numpy==1.14.6
+flask==0.12.2
+marshmallow==3.0.0rc8
+gunicorn==
+pymongo==3.8.0
+? supervisor
 
