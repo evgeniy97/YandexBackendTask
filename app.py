@@ -2,6 +2,7 @@ import os
 import numpy as np
 from flask import Flask, request, jsonify, Response
 from marshmallow import Schema, fields, ValidationError
+
 from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, isAvailable, checkCitizenExits
 import functional 
 
