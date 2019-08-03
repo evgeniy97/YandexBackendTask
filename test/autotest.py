@@ -2,8 +2,20 @@ import pymongo
 import requests
 import json
 
+from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
+from pymongo.collection import ReturnDocument
+
 ADRESS = 'http://127.0.0.1:5000/'
 
+def getRecord(import_id, citizen_id):
+    client = MongoClient("mongodb://localhost:27017")
+    db = client.yandex
+    collection = db['import_{}'.format(import_id)]
+    data = collection.find_one({'citizen_id': int(citizen_id)})
+    data.pop('_id',None)
+    return data
+        
 def testPOST(json_name,expected_code,if_answer_expected,expected_import_id, description):
     with open(json_name) as json_file:
         data = json.load(json_file)
@@ -14,7 +26,9 @@ def testPOST(json_name,expected_code,if_answer_expected,expected_import_id, desc
     if if_answer_expected:
         assert json.loads(response.content) == { 'data': {'import_id': expected_import_id} }, "{}: import_id error".format(description)
 
-def testPath(expected_code, import_id, citizen_id, newData,if_answer_expected, json_name, description):
+def testPath(expected_code, import_id, citizen_id, newData,
+        if_answer_expected, json_name, description,
+        relativesTest = False, relativesJson = None, relativesID = None):
     response = requests.patch(
         "http://127.0.0.1:5000/imports/{}/citizens/{}".format(import_id, citizen_id),json=newData)
     print(response.status_code)
@@ -23,6 +37,14 @@ def testPath(expected_code, import_id, citizen_id, newData,if_answer_expected, j
         with open(json_name) as json_file:
             expected_answer = json.load(json_file)
         assert json.loads(response.content)['data'] == expected_answer, "{}: data error".format(description)
+    if relativesTest:
+        for json_relative, relativeID in zip(relativesJson, relativesID):
+            with open(json_relative) as f:
+                expected_relative_answer = json.load(f)
+            
+            gottenData = getRecord(import_id,relativeID)
+            assert expected_relative_answer == gottenData, "{}: relative {} error".format(description, relativeID)
+
 
 def testGet1(expected_code, import_id,if_answer_expected, json_name, description):
     response = requests.get('http://127.0.0.1:5000/imports/{}/citizens'.format(import_id))
