@@ -85,7 +85,7 @@ def patch(import_id, citizen_id): # TEST
     # if 'citizen_id' in content: return Response(status=400) # check
 
     try:
-        CitizenPathSchema().load(data)
+        CitizenPathSchema().load(content)
     except ValidationError as err:
         print(err.messages)
         return Response(status=400)
