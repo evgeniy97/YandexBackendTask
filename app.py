@@ -52,7 +52,15 @@ def post(): # TEST
     # Если успешно, то присылаем код 201 и json файл
     return jsonify({"data":{"import_id": import_id}}), 201
 
-
+class CitizenPathSchema(Schema):
+    town = fields.Str()
+    street = fields.Str()
+    building = fields.Str()
+    apartment = fields.Int(validate=lambda x: x >= 0) # >0
+    name = fields.Str()
+    birth_date = fields.DateTime(format='%d.%m.%Y')
+    gender = fields.Str(validate=lambda x: x in ['male','female']) # male/female
+    relatives = fields.List(fields.Int)
 
 @app.route('/imports/<import_id>/citizens/<citizen_id>', methods=['PATCH'])
 def patch(import_id, citizen_id): # TEST
@@ -74,8 +82,13 @@ def patch(import_id, citizen_id): # TEST
     content = request.json
 
     if len(content) == 0: return Response(status=400)
-    if 'citizen_id' in content: return Response(status=400) # check
+    # if 'citizen_id' in content: return Response(status=400) # check
 
+    try:
+        CitizenPathSchema().load(data)
+    except ValidationError as err:
+        print(err.messages)
+        return Response(status=400)
     
     # Change citizen data then get it
     citizenData = functional.change(import_id,int(citizen_id),content)
