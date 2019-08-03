@@ -111,7 +111,11 @@ def change(import_id,citizen_id, content):
         return changeRecord(import_id,citizen_id,content)
     else:
         new_relatives = content.pop('relatives')
-        data = changeRecord(import_id,citizen_id,content)
+        if len(content) != 0:
+            data = changeRecord(import_id,citizen_id,content)
+        else:
+            data = getRecord(import_id,citizen_id)
+            
         old_relatives = data['relatives']
 
         # Этим циклом добавляем новые свзяи
