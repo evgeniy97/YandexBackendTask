@@ -117,6 +117,17 @@ testPath(400,3,10,{"birth_date":"12.13.2000"},False,None, "incorrect date")
 testPath(400,3,10,{"gender": 1},False, None, "bad data type")
 testPath(400,3,10000000,{"Name": "Ivan"},False,None, "citizen not exist")
 testPath(400,19,1,{"Name": "Ivan"}, False, None, "import_id not exists")
-testPath(400,3,10, [{"Name": "Ivan"}, {"Name": "Vasya"}, False, None, "Bad type: list")
+testPath(400,3,10, [{"Name": "Ivan"}, {"Name": "Vasya"}], False, None, "Bad type: list")
+
+testPath(400,3,2,{"Name": "Ivan"},True,"jsons/path1.json","name change test")
+testPath(400,3,2,{"birth_date": "10.07.1997"},True,"jsons/path2.json","date change")
+testPath(400,3,2,{"relatives": [2]}, True, "jsons/path3.json","good_selfrelate")
+
+testPath(400,3,3,{"relatives": [4]},True,"jsons/path4.json","add relative",
+        True,["jsons/pathrelative1.json"],[4])
+testPath(400,3,3,{"relatives": [4,5]},True,"jsons/path5.json","add relative",
+        True,["jsons/pathrelative1.json","jsons/pathrelative2.json"],[4,5])
+testPath(400,3,4,{"relatives": []},True,"jsons/path6.json","delete relative",
+        True,["jsons/pathrelative3.json"],[3])
 
 #myclient.drop_database('yandex')
