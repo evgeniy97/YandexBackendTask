@@ -119,7 +119,7 @@ testPath(400,3,10000000,{"name": "Ivan"},False,None, "citizen not exist")
 testPath(400,19,1,{"name": "Ivan"}, False, None, "import_id not exists")
 testPath(400,3,10, [{"name": "Ivan"}, {"Name": "Vasya"}], False, None, "Bad type: list")
 
-testPath(200,3,2,{"name": "Ivan"},True,"jsons/path1.json","name change test") # ошибка
+testPath(200,3,2,{"name": "Ivan"},True,"jsons/path1.json","name change test")
 testPath(200,3,2,{"birth_date": "10.07.1997"},True,"jsons/path2.json","date change")
 testPath(200,3,2,{"relatives": [2]}, True, "jsons/path3.json","good_selfrelate")
 
@@ -130,4 +130,4 @@ testPath(200,3,3,{"relatives": [4,5]},True,"jsons/path5.json","add relative",
 testPath(200,3,4,{"relatives": []},True,"jsons/path6.json","delete relative",
         True,["jsons/pathrelative3.json"],[3])
 
-#myclient.drop_database('yandex')
+myclient.drop_database('yandex')
