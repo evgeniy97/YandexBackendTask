@@ -73,6 +73,7 @@ def patch(import_id, citizen_id): # TEST
 
     content = request.json
 
+    if len(content) == 0: return Response(status=400)
     if 'citizen_id' in content: return Response(status=400) # check
 
     
