@@ -18,10 +18,15 @@ sudo chown -R `id -un` /data/db
 ### Последоватеность команд для консоли:  
  * Follow docker install instruction https://www.digitalocean.com/community/tutorials/docker-ubuntu-18-04-1-ru*  
  * Устанавливаем контейнер mongodb *  
- docker run -d -p 127.0.0.1:27017:27017 --name mongoDB mongo
- 
+sudo docker run -d -p 127.0.0.1:27017:27017 --name mongoDB mongo
+git clone https://github.com/evgeniy97/YandexBackendTask.git 
+cd YandexBackendTask
+cd flask_app
+sudo docker build --tag flask_gunicorn_app .
+sudo docker run --detach -p 80:8000 flask_gunicorn_app
 
- sudo apt install gunicorn
+sudo docker run -p 80:8000 flask_gunicorn_app
+sudo docker container ls -a
 
 ## TO Do
 Разобраться с NGINX и нужен ли он здесь? [link](https://medium.com/@kmmanoj/deploying-a-scalable-flask-app-using-gunicorn-and-nginx-in-docker-part-2-fb33ec234113)
