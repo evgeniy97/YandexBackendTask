@@ -98,8 +98,8 @@ def get(import_id): # +
 def getBirthdays(import_id):
     """
     Returns residents and the number of gifts they will buy
-    to your immediate family (1st order), grouped by month
-    from the specified dataset
+    to your immediate family (1st order), grouped by month
+    from the specified dataset
     """
 
     if  not import_id.isdigit(): return Response(status=400)
@@ -113,7 +113,7 @@ def getBirthdays(import_id):
 def getAgePercentile(import_id):
     """
     Returns city statistics for the specified dataset
-    in terms of age: p50, p75, p99, where the number is the percentile value
+    in terms of age: p50, p75, p99, where the number is the percentile value
     """
     if  not import_id.isdigit(): return Response(status=400)
     if int(import_id) > dbLen(): return Response(status=400)
@@ -126,6 +126,6 @@ def getAgePercentile(import_id):
 
 if __name__ == '__main__':
     if isAvailable():
-        app.run()
+        app.run(host="0.0.0.0", port=80)
     else:
         print("Server not available")
