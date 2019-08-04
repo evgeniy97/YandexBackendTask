@@ -6,10 +6,11 @@ from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from pymongo.collection import ReturnDocument
 
-ADRESS = 'http://127.0.0.1:5000/'
+MONGODB_ADRESS =  "mongodb://localhost:27017"
+SERVER_ADRESS = 'http://127.0.0.1:5000'
 
 def getRecord(import_id, citizen_id):
-    client = MongoClient("mongodb://localhost:27017")
+    client = MongoClient(MONGODB_ADRESS)
     db = client.yandex
     collection = db['import_{}'.format(import_id)]
     data = collection.find_one({'citizen_id': int(citizen_id)})
@@ -20,7 +21,7 @@ def testPOST(json_name,expected_code,if_answer_expected,expected_import_id, desc
     with open(json_name) as json_file:
         data = json.load(json_file)
 
-    response = requests.post('http://127.0.0.1:5000/imports',json=data)
+    response = requests.post( SERVER_ADRESS + '/imports',json=data)
     print(response.status_code)
     assert response.status_code == expected_code, "{}: http error".format(description)
     if if_answer_expected:
@@ -30,7 +31,7 @@ def testPath(expected_code, import_id, citizen_id, newData,
         if_answer_expected, json_name, description,
         relativesTest = False, relativesJson = None, relativesID = None):
     response = requests.patch(
-        "http://127.0.0.1:5000/imports/{}/citizens/{}".format(import_id, citizen_id),json=newData)
+        SERVER_ADRESS + "/imports/{}/citizens/{}".format(import_id, citizen_id),json=newData)
     print(response.status_code)
     assert response.status_code == expected_code, "{}: http error".format(description)
     if if_answer_expected:
@@ -47,7 +48,7 @@ def testPath(expected_code, import_id, citizen_id, newData,
 
 
 def testGet1(expected_code, import_id,if_answer_expected, json_name, description):
-    response = requests.get('http://127.0.0.1:5000/imports/{}/citizens'.format(import_id))
+    response = requests.get( SERVER_ADRESS + '/imports/{}/citizens'.format(import_id))
     print(response.status_code)
     assert response.status_code == expected_code, "{}: http error".format(description)
     if if_answer_expected:
@@ -56,7 +57,7 @@ def testGet1(expected_code, import_id,if_answer_expected, json_name, description
         assert json.loads(response.content)['data'] == expected_answer['citizens'], "{}: data error".format(description)
 
 def testGet2(expected_code,import_id,if_answer_expected, json_name, description):
-    response = requests.get('http://127.0.0.1:5000/imports/{}/citizens/birthdays'.format(import_id))
+    response = requests.get(SERVER_ADRESS + '/imports/{}/citizens/birthdays'.format(import_id))
     print(response.status_code)
     assert response.status_code == expected_code, "{}: http error".format(description)
     if if_answer_expected:
@@ -65,7 +66,7 @@ def testGet2(expected_code,import_id,if_answer_expected, json_name, description)
         assert json.loads(response.content) == expected_answer, "{}: data error".format(description)
 
 def testGet3(expected_code,import_id,if_answer_expected, json_name, description):
-    response = requests.get('http://127.0.0.1:5000/imports/{}/towns/stat/percentile/age'.format(import_id))
+    response = requests.get(SERVER_ADRESS + '/imports/{}/towns/stat/percentile/age'.format(import_id))
     print(response.status_code)
     assert response.status_code == expected_code, "{}: http error".format(description)
     if if_answer_expected:
@@ -75,12 +76,12 @@ def testGet3(expected_code,import_id,if_answer_expected, json_name, description)
 
 
 # Сбросили database, чтобы провести тесты
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+myclient = pymongo.MongoClient(MONGODB_ADRESS)
 myclient.drop_database('yandex')
 
 # content TEST
 
-response = requests.get(ADRESS)
+response = requests.get(SERVER_ADRESS)
 assert response.status_code == 200, "Basic GET: error"
 
 # POST test
