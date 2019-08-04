@@ -1,14 +1,15 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from pymongo.collection import ReturnDocument
+from setting import MONGODB_ADRESS
 
 # Check if db available
 
-client = MongoClient("mongodb://localhost:27017")
+client = MongoClient(MONGODB_ADRESS)
 db = client.yandex
 
 def isAvailable():
-    client = MongoClient("mongodb://localhost:27017",serverSelectionTimeoutMS=1)
+    client = MongoClient(MONGODB_ADRESS,serverSelectionTimeoutMS=1)
     try:
         # The ismaster command is cheap and does not require auth.
         client.admin.command('ismaster')
@@ -36,7 +37,7 @@ def addRecords2DB(import_id, data):
 
 def getAllRecords(import_id):
     """
-    Получает коллекцию из БД ?(с определенным import_id)?
+    Получает коллекцию из БД
     """
     collection = db['import_{}'.format(import_id)]
     cursor = collection.find({})

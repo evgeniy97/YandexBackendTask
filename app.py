@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, Response
 from marshmallow import Schema, fields, ValidationError
 
 from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, isAvailable, checkCitizenExits
+from setting import SERVER_ADRESS
 import functional 
 
 app = Flask(__name__)
