@@ -21,13 +21,13 @@ def isAvailable():
 
 def dbLen():
     """
-    Возвращает количество коллекций в БД
+    Returns the number of collections in the database
     """
     return len(db.list_collection_names())
 
 def addRecords2DB(import_id, data):
     """
-    Добавляет коллекцию в БД
+    Adds a collection to the database
     data: list if dict
     """
     collection = db['import_{}'.format(import_id)]
@@ -37,7 +37,7 @@ def addRecords2DB(import_id, data):
 
 def getAllRecords(import_id):
     """
-    Получает коллекцию из БД
+    Gets a collection from the database
     """
     collection = db['import_{}'.format(import_id)]
     cursor = collection.find({})
@@ -49,15 +49,15 @@ def getAllRecords(import_id):
 def changeRecord(import_id, citizen_id, newData):
     """
     newData: dict
-    Изменяет информацию о житиле и возвращает новую информацию
+    Changes resident information and returns new information
     """
     collection = db['import_{}'.format(import_id)]
     data = collection.find_one_and_update(
-        {'citizen_id': citizen_id}, # ключ, по которому меняем
+        {'citizen_id': citizen_id},
         {
             '$set': newData
         }
-        ,return_document=ReturnDocument.AFTER # вернуть модифицированный вариант
+        ,return_document=ReturnDocument.AFTER
     )
     data.pop('_id',None)
     return data

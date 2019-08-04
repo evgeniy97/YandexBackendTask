@@ -8,7 +8,7 @@ def minMax(a,b):
 
 class Relatives(object):
     """
-    Структура необходимая для проверки родтсвенных связей
+    The structure required to verify family ties
     """
     def __init__(self):
         self.open_relate = set()
@@ -31,11 +31,11 @@ class Relatives(object):
 
 def isRelativesCorrect(data):
     """
-    Получает на вход список житилей, смотрит на корректность
-    родственных связей. Проходимся по всем жителям и добавляем пару 
-    (my_id, my_relatives_id) в список unclosed_id, если такой пары в списке нет.
-    Если такая пара есть, то удаляем ее из списка. Если my_id == my_relatives_id,
-    то ничего не делаем
+    Receives a list of lives on entry, looks at the correctness
+    family ties. We go through all the inhabitants and add a couple
+    (my_id, my_relatives_id) to the unclosed_id list if there is no such pair in the list.
+    If there is such a pair, then remove it from the list. If my_id == my_relatives_id,
+    don't do anything
     """
     unclosed_id = Relatives()
     for person in data:
@@ -45,7 +45,7 @@ def isRelativesCorrect(data):
 
 def calculateAge(birthDate):
     """
-    Возвращает int: возраст жителя
+    Returns int: age of resident
     """
     date_of_birth = datetime.strptime(birthDate, "%d.%m.%Y")
     today = date.today()
@@ -54,19 +54,19 @@ def calculateAge(birthDate):
 
 def getCitizen(import_id, citizen_id):
     """
-    Возвращает запись из БД
+    Returns a record from the database
     """
     return getRecord(import_id,int(citizen_id))
 
 def getCitizenMonth(import_id, citizen_id):
     """
-    Возвращает str: месяк рождения в формату MM (1 - для января и тд..)
+    Returns str: month of birth in MM format (1 - for January, etc. ..)
     """
     return str(int(getCitizen(import_id, citizen_id)['birth_date'][3:5])) # str(int('01')) -> '1'
 
 def calculatePresents(import_id):
     """
-    Вычисляет количество подарков, которые купить житель, в кадом месяце
+    Calculates the number of gifts a resident buys in each month
     """
     data = getAllRecords(import_id)
     
@@ -84,7 +84,6 @@ def calculatePresents(import_id):
             else:
                 relativesMonth[month] = 1
         
-        # Раскидать этого person по месяцам
         for month, number in relativesMonth.items():
             returnedMonth[month].append(
                 {
@@ -97,7 +96,7 @@ def calculatePresents(import_id):
 
 def calculatePercentile(city_name, ages):
     """
-    Вычисляет перцентили в заданном формате
+    Calculates percentiles in the given format
     """
     return {
         "town": city_name,
@@ -108,9 +107,9 @@ def calculatePercentile(city_name, ages):
 
 def calculatePercentileFunctional(import_id):
     """
-    Функция вычисляет перцентрили - для начала она из указанного импорта
-    вычисляет все возраста и раскидывает их по городам, затем пару 
-    город и возраста жителей города передает функции calculatePercentile
+    The function calculates the percentiles - to begin with, it is from the specified import
+    calculates all ages and scatters them by city, then a couple
+    the city and the age of the city residents passes calculatePercentile
     """
     data = getAllRecords(import_id)
     agesPerTowns = {}
@@ -126,7 +125,7 @@ def calculatePercentileFunctional(import_id):
 
 def change(import_id,citizen_id, content):
     """
-    Функция изменяет запись в БД
+    The function changes the record in the database
     """
     citizen_id = int(citizen_id)
     if not 'relatives' in content:
@@ -140,25 +139,23 @@ def change(import_id,citizen_id, content):
             
         old_relatives = data['relatives']
 
-        # Этим циклом добавляем новые свзяи
         for relative_id in new_relatives:
             if not relative_id in old_relatives:
                 """
-                1) Получим данные этого жителя, возьмем из них его родственников
-                2) Добавим текущего жителя в список
-                3) Обновим список родственников
+                1) Get the data of this resident, take from him his relatives
+                2) Add the current resident to the list
+                3) Update the list of relatives
                 """
                 otherCitizenDataRelatives = getRecord(import_id,relative_id)['relatives']
                 otherCitizenDataRelatives.append(citizen_id)
                 changeRecord(import_id,relative_id,{'relatives': otherCitizenDataRelatives})
         
-        # Этим циклом удаляем старые связи
         for relative_id in old_relatives:
             if not relative_id in new_relatives:
                 """
-                1) Получим данные этого жителя, возьмем из них его родственников
-                2) Удалим текущего жителя в список
-                3) Обновим список родственников
+                1) Get the data of this resident, take from him his relatives
+                2) Delete the current resident in the list
+                3) Update the list of relatives
                 """
                 otherCitizenDataRelatives = getRecord(import_id,relative_id)['relatives']
                 otherCitizenDataRelatives.remove(citizen_id)

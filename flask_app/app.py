@@ -29,7 +29,7 @@ def hello():
 def post():
     if not request.is_json: return Response(status=400)
      
-    # Получить данные из запроса 
+    # Get data from request 
     content = request.json
     data = content['citizens']
 
@@ -41,12 +41,11 @@ def post():
     if not functional.isRelativesCorrect(data):
         return Response(status=400)
 
-    # Получить import_id
+    # Get import_id
     import_id = dbLen() + 1
-    # Положить в БД
+    # Add to DB
     addRecords2DB(import_id,data)
 
-    # Если успешно, то присылаем код 201 и json файл
     return jsonify({"data":{"import_id": import_id}}), 201
 
 class CitizenPathSchema(Schema):
@@ -62,7 +61,7 @@ class CitizenPathSchema(Schema):
 @app.route('/imports/<import_id>/citizens/<citizen_id>', methods=['PATCH'])
 def patch(import_id, citizen_id): # TEST
     """
-    Изменяет информацию о жителе в указанном наборе данных
+    Change information about current citizens in curren import
     """
 
     if  not import_id.isdigit(): return Response(status=400)
@@ -87,7 +86,7 @@ def patch(import_id, citizen_id): # TEST
 @app.route('/imports/<import_id>/citizens', methods=['GET'])
 def get(import_id): # +
     """
-    Возвращает список всех жителей для указанного набора
+    Return list of citizens for import_id
     """
     if  not import_id.isdigit(): return Response(status=400)
     if int(import_id) > dbLen(): return Response(status=400)
@@ -98,9 +97,9 @@ def get(import_id): # +
 @app.route('/imports/<import_id>/citizens/birthdays', methods=['GET'])
 def getBirthdays(import_id):
     """
-    Возвращает жителей и количество подарков, которые они будут покупать
-    своим ближайшим родственникам (1-го порядка), сгрупированных по месяцам
-    из указанного набора данных
+    Returns residents and the number of gifts they will buy
+    to your immediate family (1st order), grouped by month
+    from the specified dataset
     """
 
     if  not import_id.isdigit(): return Response(status=400)
@@ -113,8 +112,8 @@ def getBirthdays(import_id):
 @app.route('/imports/<import_id>/towns/stat/percentile/age', methods=['GET'])
 def getAgePercentile(import_id):
     """
-    Возвращает статистику по городам для указанного набора данных
-    в разрезе возраста жителец: p50, p75, p99, где число - это значение перцентиля
+    Returns city statistics for the specified dataset
+    in terms of age: p50, p75, p99, where the number is the percentile value
     """
     if  not import_id.isdigit(): return Response(status=400)
     if int(import_id) > dbLen(): return Response(status=400)
