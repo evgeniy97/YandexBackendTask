@@ -6,10 +6,10 @@
 ## Инструкция
 ### Развертывание
 
-entrant
+gdffsdfentrant
 6d8b422af8cec3ab6bb838ca114b9350ca318eaac55411b3968233482d92d178
 
-Последоватеность команд для консоли: 
+Последоватеность команд для консоли (простая установка) : 
 sudo apt install git
 git clone https://github.com/evgeniy97/YandexBackendTask.git
 sudo apt install python3-pip

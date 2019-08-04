@@ -6,7 +6,12 @@ from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, get
 def minMax(a,b):
     return (min(a,b), max(a,b))
 
+
+
 class Relatives(object):
+    """
+    Структура необходимая для проверки родтсвенных связей
+    """
     def __init__(self):
         self.open_relate = set()
 
@@ -49,13 +54,22 @@ def calculateAge(birthDate):
     return today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
 
 
-def getCitizen(import_id, citizen_id): #TEST
-    return getRecord(import_id,int(citizen_id)) # Лучше написать функцию, которая просто возрасщает запись
+def getCitizen(import_id, citizen_id):
+    """
+    Возвращает запись из БД
+    """
+    return getRecord(import_id,int(citizen_id))
 
 def getCitizenMonth(import_id, citizen_id):
+    """
+    Возвращает str: месяк рождения в формату MM (1 - для января и тд..)
+    """
     return str(int(getCitizen(import_id, citizen_id)['birth_date'][3:5])) # str(int('01')) -> '1'
 
-def calculatePresents(import_id): # TEST
+def calculatePresents(import_id):
+    """
+    Вычисляет количество подарков, которые купить житель, в кадом месяце
+    """
     data = getAllRecords(import_id)
     
     returnedMonth = {}
@@ -84,6 +98,9 @@ def calculatePresents(import_id): # TEST
     return returnedMonth
 
 def calculatePercentile(city_name, ages):
+    """
+    Вычисляет перцентили в заданном формате
+    """
     return {
         "town": city_name,
         "p50": np.percentile(ages,50,interpolation='linear'),
@@ -92,8 +109,12 @@ def calculatePercentile(city_name, ages):
     }
 
 def calculatePercentileFunctional(import_id):
+    """
+    Функция вычисляет перцентрили - для начала она из указанного импорта
+    вычисляет все возраста и раскидывает их по городам, затем пару 
+    город и возраста жителей города передает функции calculatePercentile
+    """
     data = getAllRecords(import_id)
-
     agesPerTowns = {}
 
     for person in data:
@@ -106,6 +127,9 @@ def calculatePercentileFunctional(import_id):
     return responseData
 
 def change(import_id,citizen_id, content):
+    """
+    Функция изменяет запись в БД
+    """
     citizen_id = int(citizen_id)
     if not 'relatives' in content:
         return changeRecord(import_id,citizen_id,content)
