@@ -1,11 +1,9 @@
 from datetime import datetime, date
 import numpy as np
-
 from dataBaseTools import dbLen, addRecords2DB, getAllRecords, changeRecord, getRecord
 
 def minMax(a,b):
     return (min(a,b), max(a,b))
-
 
 
 class Relatives(object):
