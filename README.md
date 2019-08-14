@@ -30,7 +30,14 @@ sudo docker run --detach -p 80:8000 --restart always flask_gunicorn_app
 sudo docker run -p 80:8000 flask_gunicorn_app  
 sudo docker container ls -a
 
-sudo docker logs
+### To run tests  
+cd YandexBackendTask  
+cd test  
+python3 autotest.py
+
+В качестве ответа должно получиться коды ответа запросов от сервера  
+
+
 
 ## TO Do
 - Разобраться с NGINX и нужен ли он здесь? [link](https://medium.com/@kmmanoj/deploying-a-scalable-flask-app-using-gunicorn-and-nginx-in-docker-part-2-fb33ec234113)  

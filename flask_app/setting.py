@@ -1,3 +1,3 @@
 
-MONGODB_ADRESS = "mongodb://localhost:27017"
+MONGODB_ADRESS = "mongodb://172.17.0.2"
 SERVER_ADRESS = ""

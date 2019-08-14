@@ -6,8 +6,8 @@ from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from pymongo.collection import ReturnDocument
 
-MONGODB_ADRESS =  "mongodb://localhost:27017"
-SERVER_ADRESS = 'http://127.0.0.1:5000'
+MONGODB_ADRESS = "mongodb://172.17.0.2"
+SERVER_ADRESS = 'http://0.0.0.0:80'
 
 def getRecord(import_id, citizen_id):
     client = MongoClient(MONGODB_ADRESS)
@@ -74,8 +74,6 @@ def testGet3(expected_code,import_id,if_answer_expected, json_name, description)
             expected_answer = json.load(json_file)
         assert json.loads(response.content) == expected_answer, "{}: data error".format(description)
 
-
-# Сбросили database, чтобы провести тесты
 myclient = pymongo.MongoClient(MONGODB_ADRESS)
 myclient.drop_database('yandex')
 
@@ -86,7 +84,6 @@ assert response.status_code == 200, "Basic GET: error"
 
 # POST test
 
-# Хороший запрос
 
 testPOST('jsons/good_2.json',201,True,1,"Basic POST 2 good request")
 testPOST('jsons/good_selfrelate.json',201,True,2,"Basic POST 2 self relate request")
