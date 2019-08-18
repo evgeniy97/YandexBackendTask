@@ -26,8 +26,6 @@ cd YandexBackendTask
 cd flask_app  
 sudo docker build --tag flask_gunicorn_app .  
 sudo docker run --detach -p 80:8000 --restart always flask_gunicorn_app   
-
-sudo docker run -p 80:8000 flask_gunicorn_app  
 sudo docker container ls -a
 
 ### To run tests  
